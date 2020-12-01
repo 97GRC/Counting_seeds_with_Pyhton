@@ -7,6 +7,7 @@ import sys
 import os
 import pandas as pd
 import re
+import matplotlib.pyplot as plt
 
 #FUNÇÃO
 files = 'feijao_001.jpg' 
@@ -51,7 +52,8 @@ for i in files:
 	value += 1
 	match = re.findall(r'^\w.+_', names)
 	trat.append(match)
-print(trat)
+trat2 = [valores for sublista in trat for valores in sublista]
+print(trat2)
 
 Id = []
 value = 0
@@ -61,15 +63,21 @@ for i in files:
 	value += 1
 	match2 = re.findall(r'\d\d\d', ID)
 	Id.append(match2)
-print(Id) 
+Id2 = [val for sublist in Id for val in sublist]
+print(Id2) 
 
 #SALVANDO OS DADOS NUM ARQUIVO CSV
-df = pd.DataFrame(data={'Trat': trat, 'Id': Id, 'num_seeds': num_seeds})
-df.to_csv("./Seeds.csv", sep = ',', index = False)
+
+df = pd.DataFrame(data={'Trat': trat2, 'Id': Id2, 'num_seeds': num_seeds})
+#df.to_csv("./Seeds.csv", sep = ',', index = False)
 
 #ANÁLISE EXPLORATÓRIA
+#Bloxplot
+boxplot = df.boxplot(by = 'Trat',column = ['num_seeds'], grid='false')
+plt.savefig('boxplot.png')	
 
-	
+#Histograma
+
 
 
 
