@@ -8,6 +8,7 @@ import os
 import pandas as pd
 import re
 import matplotlib.pyplot as plt
+import glob
 
 #FUNÇÃO
 files = 'feijao_001.jpg' 
@@ -30,53 +31,61 @@ def seeds_number(files):
 #LENDO VÁRIOS ARQUIVOS 
 os.chdir(sys.argv[1]) #Verificar se só tem imagens e como o nome eh
 files = os.listdir()
-files.sort()
-print(files)
-value = 0
+#print(files)
 
+images = glob.glob('*.jpg') #Filtrando apenas as imagens .jpg (de interesse)
+#print(images)
+
+#Verificando os arquivos quanto ao formato e a nomemclatura
+
+
+value = 0
 num_seeds = []
 
-for i in files:
-	imagem = files[value]
+for i in images:
+	imagem = images[value]
 	value += 1	
 	num_seeds.append(seeds_number(imagem))
 	
-print(num_seeds)
+#print(num_seeds)
 
 #CRIANDO ARQUIVO CSV
 trat = []
 value = 0
 
-for i in files:
-	names = files[value]
+for i in images:
+	names = images[value]
 	value += 1
 	match = re.findall(r'^\w.+_', names)
 	trat.append(match)
 trat2 = [valores for sublista in trat for valores in sublista]
-print(trat2)
 
 Id = []
 value = 0
 
-for i in files:
-	ID = files[value]
+for i in images:
+	ID = images[value]
 	value += 1
 	match2 = re.findall(r'\d\d\d', ID)
 	Id.append(match2)
 Id2 = [val for sublist in Id for val in sublist]
-print(Id2) 
+ 
 
 #SALVANDO OS DADOS NUM ARQUIVO CSV
 
 df = pd.DataFrame(data={'Trat': trat2, 'Id': Id2, 'num_seeds': num_seeds})
-#df.to_csv("./Seeds.csv", sep = ',', index = False)
+print(df)
+
+df.to_csv("./Seeds.csv", sep = ',', index = False)
 
 #ANÁLISE EXPLORATÓRIA
 #Bloxplot
 boxplot = df.boxplot(by = 'Trat',column = ['num_seeds'], grid='false')
-plt.savefig('boxplot.png')	
+plt.savefig('boxplot.png')
 
 #Histograma
+hist = df.hist(column = 'num_seeds')
+plt.savefig('hist')
 
 
 
