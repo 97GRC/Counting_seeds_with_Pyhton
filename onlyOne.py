@@ -1,44 +1,54 @@
 #!/usr/bin/env python3
 
 #Bibliotecas
-import cv2                          
-import numpy as np
-import sys
-import os
-import pandas as pd
-import re
-import matplotlib.pyplot as plt
-import glob
+import cv2              #Leitura e manipulação das imagens                     
+import numpy as np      #Manioulação de arrays 
+import sys              
+import os               #Manipular caminhos
+import pandas as pd     #Análise de dados
+import re               #Regular Expressions
+import matplotlib.pyplot as plt #Criar, manipular e salvar plots
+import glob             #Encontra arquivos com um padr~so específico
 
-#FUNÇÃO
-files = 'feijao_001.jpg' 
+#FUNÇÃO seeds_number
+files = 'feijao_001.jpg' #arquivo base para criar a função
 
 def seeds_number(files):
-	img = cv2.imread(files)
-	blur = cv2.blur(img, (50, 50))
-	grey = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
-	th = cv2.threshold(grey, 110, 255, cv2.THRESH_BINARY)[1]
-	sp = cv2.morphologyEx(th,
+	img = cv2.imread(files) #Leitura da imagem
+	blur = cv2.blur(img, (50, 50)) #Desfoque da imagem
+	grey = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY) #Transformação em preto e branco
+	th = cv2.threshold(grey, 110, 255, cv2.THRESH_BINARY)[1] #Transformação da imagem em binária, usando um threshold de 110
+	sp = cv2.morphologyEx(th, #Remove o ruido presente na imagem binária
                        cv2.MORPH_OPEN,
-                       np.ones((10, 10), np.uint8),
+                       np.ones((10, 10), np.uint8), #Transforma th num array
                        iterations = 4)
-	contours, hierarchy = cv2.findContours(th,
+	contours, hierarchy = cv2.findContours(th, #Encontra os contornos presentes na imagem
                                        cv2.RETR_EXTERNAL,
                                        cv2.CHAIN_APPROX_SIMPLE)
-	return len(contours)
+	return len(contours) #Retorna a quantidade de contornos encontrados
 
 
 #LENDO VÁRIOS ARQUIVOS 
-os.chdir(sys.argv[1]) #Verificar se só tem imagens e como o nome eh
-files = os.listdir()
-#print(files)
+os.chdir(sys.argv[1]) #Muda o diretório de trabalho para aquele contendo as imagens 
 
-images = glob.glob('*.jpg') #Filtrando apenas as imagens .jpg (de interesse)
-#print(images)
+#VERIFICANDO SE A IMAGENS NO DIRETÓRIO
+images = glob.glob('*.jpg') #Filtra apenas as imagens .jpg e retorna os nomes numa lista
 
-#Verificando os arquivos quanto ao formato e a nomemclatura
+if len(images) >= 1:
+	print(f'Há {len(images)} arquivos a serem analisados')
+else:
+	print('Não há arquivos com a extensão desejada no diretório')
+	sys.exit() #Se não há arquivos com a extesão desejada o código é parado
 
+#VERIFICANDO SE A NOMENCLATURA DOS ARQUIVOS ESTÁ CORRETA
+found = re.compile(r'\w.+?\d\d\d') #Padrão necessário para nomear os arquivos
+names = list(filter(found.match, images)) #Lista com os arquivos que seguem o padrão requerido
+	
+if len(names) != len(images):
+	print('Os arquivos não estão nomeados da forma necessária')
+	sys.exit() #Se a quantidade de imagens a serem analisadas não bate com a quantidade de imagens com a nomenclatura correta o código aborta
 
+#CONTANDO AS SEMENTES EM CADA ARQUIVO
 value = 0
 num_seeds = []
 
