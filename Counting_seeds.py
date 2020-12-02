@@ -55,7 +55,8 @@ names = list(filter(found.match, images)) #Lista com os arquivos que seguem o pa
 if len(names) != len(images):
 	print('Os arquivos não estão nomeados da forma necessária')
 	sys.exit() #Se a quantidade de imagens a serem analisadas não bate com a quantidade de imagens com a nomenclatura correta o código aborta
-
+else: 
+	print('As imagens estão nomeadas da forma correta')
 #CONTANDO AS SEMENTES EM CADA ARQUIVO
 value = 0
 num_seeds = [] #Lista onde a quantidade de sementes de cada imagem irá ser salvo
