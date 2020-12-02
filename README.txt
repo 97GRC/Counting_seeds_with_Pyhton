@@ -20,7 +20,7 @@ Para que você consiga rodar o código com sucesso é necessário seguir as dire
 	3. O script está programado para ler imagens tipo JPG, caso seja outra extensão é preciso mudar a informação na linha 47.
 
 	4. As imagens devem ser nomeadas da seguinte maneira: NOME DO TRATAMENTO/GRUPO_REPETIÇÃO/PARCELA.jpg (ou outra extensão)
-		O id da parcela DEVE ser composto por TRÊS digítos, caso não seja suficiente mudar o código na linha 52 e 85, adicionando \d para cada dígito a mais.
+		O id da parcela DEVE ser composto por TRÊS digítos, caso não seja suficiente mudar o código na linha 52 e 86, adicionando \d para cada dígito a mais.
 		EXEMPLO: milho_001.jpg
 
 	5. O default da função seeds_num() para o threshold é 110. Verificar se esse mesmo valor se aplica aos seus arquivos, caso não encontrar o novo valor limite para a binarização.
