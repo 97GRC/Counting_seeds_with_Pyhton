@@ -101,7 +101,7 @@ plt.savefig('boxplot.png') #Salva o gráfico com uma imagem .png no diretório
 
 #Histograma
 hist = df.hist(column = 'num_seeds')
-plt.savefig('hist') #Salva o gráfico como uma imagem .png
+plt.savefig('hist.png') #Salva o gráfico como uma imagem .png
 
 
 
